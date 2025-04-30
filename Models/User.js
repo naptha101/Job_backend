@@ -27,6 +27,11 @@ password:{
     minLength:[8,"Minimum length is 8"],
     select:false
 },
+googleId: {
+  type: String,
+  unique: true,
+  sparse: true
+},
 role:{
   type:String,
   required:[true,"enter Role"],

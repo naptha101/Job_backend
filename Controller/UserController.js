@@ -307,9 +307,12 @@ return res.status(200).json({status:true,message:"Here are all experts",experts}
    return res.status(500).json({status:false,message:"Cant fetch experts"})
     }
 }
+const handleAuthSuccess = (req, res) => {
+    res.redirect(`${process.env.FRONTEND_URL}/oauth-callback?token=${req.user.token}`);
+  };
 
  
 
  
 
-module.exports = { getAllExpert,Register,Login,logout,GetUser,getBy,updateUser,setResume,updateProfil,VerifyMail,ForgotPassword,HandleForgot};
+module.exports = { getAllExpert,handleAuthSuccess,Register,Login,logout,GetUser,getBy,updateUser,setResume,updateProfil,VerifyMail,ForgotPassword,HandleForgot};

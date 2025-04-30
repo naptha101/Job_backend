@@ -29,6 +29,10 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    tags:[
+String
+    ],
+
     fixedSalary: {
         type: Number,
         

@@ -1,14 +1,34 @@
 const Job =require('../Models/Job');
 const jwt=require('jsonwebtoken')
-const User=require('../Models/User')
+const User=require('../Models/User');
+const { createClient } = require('redis');
+
+
+
+
+
  const GetAllJob=async (req,res,next)=>{
 try{
+ const redisClient = createClient();
+redisClient.on('error', (err) => console.error('Redis Client Error', err));
+
+(async () => {
+  await redisClient.connect(); 
+})();
   const {id2}=req.body;
   if(id2){
     const jobs=await Job.find({postedBy:id2});
     res.status(200).json({status:true,jobs});
   }else{
+    const cachedData = await redisClient.get('jobs');
+    
+    if(cachedData){
+   //   console.log(cachedData)
+      return res.status(200).json({status:true,jobs:JSON.parse(cachedData)})
+    }
+
     const jobs=await Job.find({expired:false});
+    await redisClient.set("jobs",JSON.stringify(jobs))
 res.status(200).json({status:true,jobs});
   }
 
